@@ -1,13 +1,12 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
 <div class="card text-center">
   <div class="card-body">
-    <h1>Bem vindo/a {{user}}</h1>
-    <p>This is an example Django polling app</p>
+    <h1>Bem vindo/a</h1>
+    <p>Caro cidadão poderá votar uma única vez no seu candidato</p>
     <a class="btn btn-dark" href="{% url 'polls:index' %}">
-        View Available Polls</a
-      >
+      Confira o que esta a decorrer</a
+    >
   </div>
-  </div>
+</div>
 {% endblock %}
