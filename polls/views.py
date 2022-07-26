@@ -3,17 +3,60 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
-from .models import Question, Choice
+from .models import Question, Choice, Eleitor
 from django.http import JsonResponse
 
 from django.contrib.auth.decorators import login_required
 
 # Get questions and display them
 # @login_required
+from django.shortcuts import redirect, render
+
+
 def index(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    context = {'latest_question_list': latest_question_list}
-    return render(request, 'polls/index.html', context)
+    eleitores = Eleitor.objects.all()
+
+    context = {
+        'eleitores': eleitores,
+    }
+    return render(request, 'index.html', context)
+
+
+def edit(request):
+    eleitores = Eleitor.objects.all()
+
+    context = {
+        'eleitores': eleitores,
+    }
+
+    return redirect(request, 'index.html', context)
+
+
+def update(request, codigo):
+    if request.method == "POST":
+        estado = request.POST.get("estado")
+        bilhete_de_identidade = request.POST.get("bilhete_de_identidade")
+        sexo = request.POST.get("sexo")
+        nome = request.POST.get("nome")
+
+        emp = Eleitor(
+            codigo=codigo,
+            estado=estado,
+            bilhete_de_identidade=bilhete_de_identidade,
+            sexo=sexo,
+            nome=nome,
+        )
+
+        emp.save()
+        return redirect('home')
+
+    return redirect(request, 'index.html')
+
+
+# def index(request):
+#     latest_question_list = Question.objects.order_by('-pub_date')[:5]
+#     context = {'latest_question_list': latest_question_list}
+#     return render(request, 'polls/index.html', context)
 
 # Show specific question and choices
 @login_required
